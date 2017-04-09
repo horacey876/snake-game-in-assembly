@@ -6,7 +6,7 @@ headcol:	.word 0xFF66FF #purple fyi:ffff66 is yellow
 fruit: 	.word 0xFF6666 #red
 
 #directional info:- up: $t0 - 128, down: +128, left: -4, right: +128
-#$t0 mo
+#w=119, a=97, s = 115 d= 100
 
 .text
 main:
@@ -14,6 +14,12 @@ main:
 	addi $t0, $gp, 0
 	li $t3, 0
 	j loop
+	start: #let's start the game
+	li $v0, 12
+	syscall  #waits for input to start the game
+	j exit
+	
+	
 #below here makes the inital board
 loop:
 	
@@ -47,7 +53,8 @@ drawhead:
 	subi $t0, $t0, 1984 #brings the color pointer back to the middle of the board to draw head
 	lw $t1, headcol($0)
 	sw $t1, 0($t0)
-	j exit
+	move $t2, $t0 #$t2 will store the head loacation. $t3 stores old head loaction
+	j start
 		
 exit:	
 li $v0, 10
